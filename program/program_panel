@@ -1,3 +1,7 @@
+# Usage: program_panel <addr>
+#
+# Note: <addr> is the desired panel address in hex - e.g 2f is address '47'
+
 # Check signature
 sudo avrdude -c avrispmkII -p m168 
 
