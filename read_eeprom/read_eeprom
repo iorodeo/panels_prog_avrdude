@@ -1,0 +1,2 @@
+sudo avrdude -c avrispmkII -p m168 -U eeprom:r:panel_eeprom.bin:r
+
