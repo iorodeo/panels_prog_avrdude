@@ -1,0 +1,1 @@
+SYBSYSTEM=="usb", SYSFS{idVendor}=="03eb", SYSFS{idProduct}=="2104", GROUP="dialout", MODE="0666"
