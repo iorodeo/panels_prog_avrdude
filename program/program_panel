@@ -10,3 +10,6 @@ sudo avrdude -c avrispmkII -p m168  -U flash:w:panel_bl.hex
 # Program firmware + no erase flash
 sudo avrdude -c avrispmkII -p m168  -D -U flash:w:panel.hex
 
+# Program eeprom
+sudo avrdude -c avrispmkII -p m168  -U eeprom:w:panel.eep
+
