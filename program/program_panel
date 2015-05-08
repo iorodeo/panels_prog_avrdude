@@ -1,0 +1,12 @@
+# Check signature
+sudo avrdude -c avrispmkII -p m168 
+
+# Write fuse values 
+sudo avrdude -c avrispmkII -p m168 -U efuse:w:0x0:m  -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m
+
+# Program bootloader + erase flash
+sudo avrdude -c avrispmkII -p m168  -U flash:w:panel_bl.hex
+
+# Program firmware + no erase flash
+sudo avrdude -c avrispmkII -p m168  -D -U flash:w:panel.hex
+
