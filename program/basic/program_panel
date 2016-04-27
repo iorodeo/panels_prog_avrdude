@@ -1,0 +1,22 @@
+# Usage: program_panel <addr>
+#
+# Note: <addr> is the desired panel address in hex - e.g 2f is address '47'
+
+# Check signature
+sudo avrdude -c avrispmkII -p m168 
+
+# Write fuse values 
+sudo avrdude -c avrispmkII -p m168 -U efuse:w:0x0:m  -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m
+
+# Program bootloader + erase flash
+sudo avrdude -c avrispmkII -p m168  -U flash:w:panel_bl.hex
+
+# Program firmware + no erase flash
+sudo avrdude -c avrispmkII -p m168  -D -U flash:w:panel.hex
+
+# Program eeprom
+cp eep_127.bin eep_xxx.bin
+printf '\x'$1 | dd of=eep_xxx.bin bs=1 seek=0 count=1 conv=notrunc
+sudo avrdude -c avrispmkII -p m168  -U eeprom:w:eep_xxx.bin:r
+rm eep_xxx.bin
+
