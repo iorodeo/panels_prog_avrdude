@@ -1,3 +1,13 @@
+# ---------------------------------------------------------------------------------------
+# program_panels.py
+#
+# Programs G3 FlyPanels. Autoincrements panels numbers
+#
+# Usage: python program_panels.py  [start_number] [stop_number] 
+#
+# Note, start_number and stop_number are optional the defaults are 1 and 127.
+#
+# ---------------------------------------------------------------------------------------
 from __future__ import print_function
 import sys
 import subprocess
