@@ -12,7 +12,15 @@ from __future__ import print_function
 import sys
 import subprocess
 
+if True: 
+    programmer = 'avrispmkII'
+    port = 'usb'
+else:
+    programmer = 'stk500'
+    port = '/dev/ttyUSB0'
+
 # Get command line arguments
+
 if len(sys.argv) > 1:
     start_number = int(sys.argv[1])
 else:
@@ -80,22 +88,22 @@ while True:
     panel_number_hex = hex(panel_number)
     
     # Check signature
-    cmd = 'sudo avrdude -c avrispmkII -p m168'
+    cmd = 'sudo avrdude -c {0} -P {1} -p m168'.format(programmer,port)
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
     
     # Write fuse values 
-    cmd = 'sudo avrdude -c avrispmkII -p m168 -U efuse:w:0x0:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'
+    cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U efuse:w:0x0:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'.format(programmer,port)
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
     
     # Program bootloader + erase flash
-    cmd = 'sudo avrdude -c avrispmkII -p m168 -U flash:w:panel_bl.hex'
+    cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U flash:w:panel_bl.hex'.format(programmer,port)
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
     
     # Program firmware + no erase flash
-    cmd = 'sudo avrdude -c avrispmkII -p m168 -D -U flash:w:panel.hex'
+    cmd = 'sudo avrdude -c {0} -P {1} -p m168 -D -U flash:w:panel.hex'.format(programmer,port)
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
     
@@ -111,7 +119,7 @@ while True:
     cmd1_list = cmd1.split(' ')
     subprocess.call(cmd1_list,stdin=printf_popen.stdout)
     
-    cmd = 'sudo avrdude -c avrispmkII -p m168 -U eeprom:w:eep_xxx.bin:r'
+    cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U eeprom:w:eep_xxx.bin:r'.format(programmer,port)
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
     

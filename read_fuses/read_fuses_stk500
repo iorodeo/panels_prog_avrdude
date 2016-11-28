@@ -1,0 +1,4 @@
+sudo avrdude -c stk500 -P /dev/ttyUSB0 -p m168 -U lfuse:r:lfuse_val.hex:h
+sudo avrdude -c stk500 -P /dev/ttyUSB0 -p m168 -U hfuse:r:hfuse_val.hex:h
+sudo avrdude -c stk500 -P /dev/ttyUSB0 -p m168 -U efuse:r:efuse_val.hex:h
+
