@@ -3,53 +3,66 @@
 #
 # Programs G3 FlyPanels. Autoincrements panels numbers
 #
-# Usage: python program_panels.py  [start_number] [stop_number] 
+# Usage: python program_panels.py  [start_number] [final_number] 
 #
-# Note, start_number and stop_number are optional the defaults are 1 and 127.
+# Note, start_number and final_number are optional the defaults are 1 and 127.
 #
 # ---------------------------------------------------------------------------------------
 from __future__ import print_function
 import sys
 import subprocess
+from optparse import OptionParser
 
-if True: 
-    programmer = 'avrispmkII'
-    port = 'usb'
-else:
-    programmer = 'stk500'
-    port = '/dev/ttyUSB0'
+usage = "usage: %prog [options] <start_number> <final_number>"
 
-# Get command line arguments
+parser = OptionParser(usage=usage)
+parser.add_option('-d', '--device', dest='device', help='specify avr programming',  default='avrispmkII')
+parser.add_option('-p', '--port', dest='port', help='specify port used by programmer, e.g usb, /dev/ttyUSB0, etc.',  default='usb')
+parser.add_option('-n', '--nobootloader', action='store_true', dest='nobootloader', help='do not use/program bootloader')
+parser.add_option('-s', '--startnum', action='store_const', dest='start_number', help='starting number for auto number increment',default=1)
+parser.add_option('-f', '--finalnum', action='store_const', dest='final_number', help='final number for auto number increment',default=127)
 
-if len(sys.argv) > 1:
-    start_number = int(sys.argv[1])
-else:
-    start_number = 1
+(options,args) = parser.parse_args()
 
-if len(sys.argv) > 2:
-    stop_number = int(sys.argv[2])
-else:
-    stop_number = 127
+programmer = options.device
+port = options.port
+bootloader = not options.nobootloader
+start_number = options.start_number
+final_number = options.final_number
+
+print()
+print('Panels batch programmer')
+print()
+print('Options')
+print('-------')
+print('programmer: {0}'.format(programmer))
+print('port:       {0}'.format(port))
+print('bootloader: {0}'.format(bootloader))
+print('start  #:   {0}'.format(start_number))
+print('final  #:   {0}'.format(final_number))
+print()
+
 
 if start_number <=0 or start_number > 127:
     print('Error: start_number must be > 0 and < 128')
     sys.exit(0)
 
-if stop_number < start_number:
-    print('Error: stop_number must be >= start_number')
+if final_number < start_number:
+    print('Error: final_number must be >= start_number')
     sys.exit(0)
 
-if stop_number > 127:
-    printf('Error: stop_number must be < 128')
+if final_number > 127:
+    printf('Error: final_number must be < 128')
     sys.exit(0)
 
-# Program panels - from start_number to stop_number
+
+# Program panels - from start_number to final_number
 panel_number = start_number
 print()
 
 while True:
 
-    ans = raw_input("Current panel# {0}/{1}.  Options p=program (default), b=back, n=next, e=exit, or new panel# (1-127): ".format(panel_number,stop_number)) 
+    ans = raw_input("Current panel# {0}/{1}.  Options p=program (default), b=back, n=next, e=exit, or new panel# (1-127): ".format(panel_number,final_number)) 
     if len(ans) == 0:
         ans = 'p'
     else:
@@ -93,17 +106,24 @@ while True:
     subprocess.call(cmd_list)
     
     # Write fuse values 
-    cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U efuse:w:0x0:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'.format(programmer,port)
+    if bootloader:
+        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U efuse:w:0x0:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'.format(programmer,port)
+    else:
+        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U efuse:w:0x01:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'.format(programmer,port)
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
     
     # Program bootloader + erase flash
-    cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U flash:w:panel_bl.hex'.format(programmer,port)
-    cmd_list = cmd.split(' ')
-    subprocess.call(cmd_list)
+    if bootloader:
+        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U flash:w:panel_bl.hex'.format(programmer,port)
+        cmd_list = cmd.split(' ')
+        subprocess.call(cmd_list)
     
     # Program firmware + no erase flash
-    cmd = 'sudo avrdude -c {0} -P {1} -p m168 -D -U flash:w:panel.hex'.format(programmer,port)
+    if bootloader:
+        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -D -U flash:w:panel.hex'.format(programmer,port)
+    else:
+        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U flash:w:panel.hex'.format(programmer,port)
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
     
@@ -127,7 +147,7 @@ while True:
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
 
-    if panel_number < stop_number:
+    if panel_number < final_number:
         panel_number += 1
 
 
