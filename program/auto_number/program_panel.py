@@ -16,11 +16,11 @@ from optparse import OptionParser
 usage = "usage: %prog [options] <start_number> <final_number>"
 
 parser = OptionParser(usage=usage)
-parser.add_option('-d', '--device', dest='device', help='specify avr programming',  default='avrispmkII')
+parser.add_option('-d', '--device', dest='device', help='specify device used for avr programming, e.g. avrispmkII, stk500',  default='avrispmkII')
 parser.add_option('-p', '--port', dest='port', help='specify port used by programmer, e.g usb, /dev/ttyUSB0, etc.',  default='usb')
 parser.add_option('-n', '--nobootloader', action='store_true', dest='nobootloader', help='do not use/program bootloader')
-parser.add_option('-s', '--startnum', action='store_const', dest='start_number', help='starting number for auto number increment',default=1)
-parser.add_option('-f', '--finalnum', action='store_const', dest='final_number', help='final number for auto number increment',default=127)
+parser.add_option('-s', '--startnum', dest='start_number', type='int', help='starting number for auto number increment',default=1)
+parser.add_option('-f', '--finalnum', dest='final_number', type='int', help='final number for auto number increment',default=127)
 
 (options,args) = parser.parse_args()
 
