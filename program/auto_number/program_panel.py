@@ -3,17 +3,13 @@
 #
 # Programs G3 FlyPanels. Autoincrements panels numbers
 #
-# Usage: python program_panels.py  [start_number] [final_number] 
-#
-# Note, start_number and final_number are optional the defaults are 1 and 127.
-#
 # ---------------------------------------------------------------------------------------
 from __future__ import print_function
 import sys
 import subprocess
 from optparse import OptionParser
 
-usage = "usage: %prog [options] <start_number> <final_number>"
+usage = "usage: %prog [options]"
 
 parser = OptionParser(usage=usage)
 parser.add_option('-d', '--device', dest='device', help='specify device used for avr programming, e.g. avrispmkII, stk500',  default='avrispmkII')
