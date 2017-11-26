@@ -1,0 +1,6 @@
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse0:r:fuse0_val.hex:h
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse1:r:fuse1_val.hex:h
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse2:r:fuse2_val.hex:h
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse4:r:fuse4_val.hex:h
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse5:r:fuse5_val.hex:h
+
