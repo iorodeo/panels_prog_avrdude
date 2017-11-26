@@ -1,0 +1,6 @@
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse0:w:0xff:m
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse1:w:0x0:m
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse2:w:0xbf:m
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse4:w:0xfe:m
+sudo avrdude -c avrispmkII -p atxmega128a1 -U fuse5:w:0xff:m
+sudo avrdude -c avrispmkII -p atxmega128a1 -U flash:w:bootloader.hex
