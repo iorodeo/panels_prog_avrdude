@@ -1,1 +1,0 @@
-sudo avrdude -p atxmega128a1 -P /dev/ttyUSB0 -b 115200 -c avr109 -e -U flash:w:firmware.hex:i 
