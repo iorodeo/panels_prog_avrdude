@@ -103,9 +103,9 @@ while True:
     
     # Write fuse values 
     if bootloader:
-        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U efuse:w:0x0:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'.format(programmer,port)
+        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U efuse:w:0xf8:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'.format(programmer,port)
     else:
-        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U efuse:w:0x01:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'.format(programmer,port)
+        cmd = 'sudo avrdude -c {0} -P {1} -p m168 -U efuse:w:0xf9:m -U hfuse:w:0xd4:m -U lfuse:w:0xf7:m'.format(programmer,port)
     cmd_list = cmd.split(' ')
     subprocess.call(cmd_list)
     
